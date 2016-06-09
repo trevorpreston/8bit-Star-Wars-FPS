@@ -1,0 +1,28 @@
+body {
+  background-color: black;
+  background-image: url(./images/bg.png);
+  background-repeat: no-repeat;
+  cursor: url(images/crosshair.png), auto;
+  z-index: -999;
+
+}
+
+.container {
+  height: 700px;
+  width: 900px;
+  position: relative;
+  margin: 40px auto;
+  z-index: -1000;
+}
+
+.target {
+  width: auto;
+  height: 80px;
+  position: absolute;
+  background-image: url(images/tie.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+
+
+
+}
