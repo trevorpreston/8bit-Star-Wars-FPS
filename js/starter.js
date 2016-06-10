@@ -1,89 +1,129 @@
 $(function(){
+    //set variables
+      var playerOneStats = {
+      score:0,
+      level:0,
+      time:0
+    }
+
+      var playerOneStats = {
+      score:0,
+      level:0,
+      time:0
+    }
+
+
+  function playerDeath(){
+    $('.tie').removeClass('tie');
+    $('.health').text('HEALTH: X');
+    $gameOver=$('<div>')
+      .addClass('game-over animated shake')
+      .text('GAME OVER')
+    $('body').prepend($gameOver)
+    playerOneStats.score = score
+    console.log(playerOneStats.score)
+    console.log(player)
+    player++
+  }
+
 
   console.log("we gucci")
+  var player = 1
   var count = 0
-
-  $('body').delegate('div', 'click', function() {
-    console.log("bang!")
-    $(this).remove();
-  });
-
+  var level = 1
+  var score = 0
+  var health = 100
+  var startRound = window.setInterval(spawn, 1500);  //second part of this function dictates enemy spawn rate
 
 
+  function hit(){
+    if(health>0){
+    var $hit = $('<div>')
+        .addClass('hit')
+        setTimeout(function(){
+          $hit.fadeOut(500, function(){
+          })
+      },600)
+    $('body').prepend($hit)
+
+
+   }
+  }
+
+
+  //spawn enemies
 
   function spawn(){
-    console.log("I'm here!")
-    var randomLeft = Math.floor(Math.random()*$(".container").width());
-    var randomTop = Math.floor(Math.random()*$(".container").height());
-    $(".container")
-      .append($("<div>")
-        .addClass("target")
-        .attr('id', 'tie'+count)
-        .css({
-          'left': randomLeft+'px',
-          'top': randomTop+'px',
-          'z-index': 100-count,  // new fighters spawn behind existing fighters
-        })
-        .animate({
-        height: '400px',
-        width: '400px',
-        margin: '-150px',
-        }, 15000 , 'linear')
-      );
+    if(health>0){
+      console.log("I'm here!")
+      var randomLeft = Math.floor(Math.random()*$(".container").width());
+      var randomTop = Math.floor(Math.random()*$(".container").height());
+      var $tie = $("<div>")         //enemy parameter
+          .addClass("tie")
+          .attr('id', 'tie'+count)
+          .css({
+            'left': randomLeft+'px',
+            'top': randomTop+'px',
+            'z-index': 100-count,  // new fighters spawn behind existing fighters
+          })
+          .animate({
+          height: '400px',
+          width: '500px',
+          margin: '-150px',
+          }, 5000 , 'linear')
+          .fadeOut(100,
+            function(){
+            hit();
+            $(this).remove();
+            if(health>0){
+              health -= 20;
+             }
+            $('.health').text('HEALTH: '+health)
+            })
+    }
+
+    if(health>0){
+      $(".container").append($tie);               //create enemy
+    } else {
+      playerDeath()
+    }
 
 
-
-    if(++count === 10) {                  // kill timer after 10 spawns
-      window.clearInterval(timer);
+    if(++count === (10*level)) {                  // start next level and reset timer after 10*level of spawns
+      window.clearInterval(startRound)
+      // setTimeout(function(){
+      var startRound = window.setInterval(spawn, 1500)
+    // },1000);
+      if(health>0){level++}
+      $('.level').text("LEVEL: "+level)
     }
   }
 
 
-  var timer = setInterval(spawn, 2200);
 
-  $('body').delegate($(".target"), 'click', destroy);
+  //set event listener for enemies
 
-  function destroy(){
-    $(this).remove();
-    console.log($(this));
+  function kill(){
+    $('body').on('click', '.tie', function(e){
+      score+=100;
+      $('.score').text('SCORE: '+score);                    // add score
+      $(this).css('background-image','url(images/boom.gif)'); //explode
+      $(this).stop(true); //stop spawn animation
+      var deadTie=$(this);
+      setTimeout(function(){
+        deadTie.remove();
+    },600)
+  })
   }
 
-
-
-  //  $('.target').one('click', destroy)
-
-
-   // $('.target').on('click', function(e){
-   //  if($(this).hasClass("container")){
-   //    console.log("you clicked the container")
-   //  } else if($(this).hasClass("target")) {
-   //    $(this).remove()
-   //    console.log("boom!")
-   //  } else {
-   //    console.log("nope")
-   //    console.log($(this))
-   //  }
-  });
+  kill()
 
 
 
 
+});
 
 
 
 
-// //Gameplan:
-// circle elements:
-//   are translucent
-//   grow over time
-//   spawn randomly
-//   are worth more the smaller they are
-
-// on click:
-//   circle elements disappear
-//   score is logged and displayed
-
-// score board:
-//   contains score
-//   time
 
