@@ -1,11 +1,12 @@
 $(function(){
 
-
+  //assign event listeners:
   $('#start-button').one('click', startGame)
   $('body').on('click', '.tie', killTie)
 
+  //track higher level game stats
   gameController = {
-    gameWinner: 2,
+    gameWinner: 0,
     player: 1,
     level: 1,
     score: 0,
@@ -15,6 +16,7 @@ $(function(){
     totalTiesThisLevel: 0
   }
 
+  //presets for level difficulties
   levelData = [
     {
       tieTotalNumber: 5,
@@ -43,23 +45,47 @@ $(function(){
     }
   ]
 
+  //track player one stats
   playerOne = {
     level: 0,
     score: 0
   }
 
+  //tracj player two stats
   playerTwo = {
     level: 0,
     score: 0
   }
 
-  function determineWinner(){
-    if(playerTwo.score > playerOne.score){
-      gameController.gameWinner = 2;
-    } else if(playerOne.score > playerTwo.score){
-      gameController.gameWinner = 1;
-    }
+  //on clicking the start button, the button is removed, the scoreboard is rendered and the level begins
+  function startGame(){
+    $('.button-container').remove();
+    createScoreboard();
+    $('body').css("cursor", "url(images/crosshair.png), crosshair");
+    nextLevel();
   }
+
+  //generate scoreboard
+  function createScoreboard(){
+    gameController.health = 100
+    var scoreboard = $('<div>').addClass('score-board')
+      .append(($('<div>'))
+        .addClass('status player')
+        .text('PLAYER: ' + gameController.player))
+      .append(($('<div>'))
+        .addClass('status level')
+        .text('LEVEL: ' + gameController.level))
+      .append(($('<div>'))
+        .addClass('status score')
+        .text('SCORE: ' + gameController.score))
+      .append(($('<div>'))
+        .addClass('status health')
+        .text('HEALTH: ' + gameController.health))
+    $('.container').prepend(scoreboard)
+  }
+
+
+
 
 
   function playerBeatLevel(){
@@ -85,31 +111,16 @@ $(function(){
   }
 
 
-
-  function startGame(){
-    $('.button-container').remove();
-    createScoreboard();
-    $('body').css("cursor", "url(images/crosshair.png), crosshair");
-    nextLevel();
+  function determineWinner(){
+    if(playerTwo.score > playerOne.score){
+      gameController.gameWinner = 2;
+    } else if(playerOne.score > playerTwo.score){
+      gameController.gameWinner = 1;
+    }
   }
 
-  function createScoreboard(){
-    gameController.health = 100
-    var scoreboard = $('<div>').addClass('score-board')
-      .append(($('<div>'))
-        .addClass('status player')
-        .text('PLAYER: ' + gameController.player))
-      .append(($('<div>'))
-        .addClass('status level')
-        .text('LEVEL: ' + gameController.level))
-      .append(($('<div>'))
-        .addClass('status score')
-        .text('SCORE: ' + gameController.score))
-      .append(($('<div>'))
-        .addClass('status health')
-        .text('HEALTH: ' + gameController.health))
-    $('.container').prepend(scoreboard)
-  }
+
+
 
   function nextLevel(){
     var currentLevel = gameController.level;
@@ -117,16 +128,14 @@ $(function(){
     var totalTies = levelData[currentLevel-1].tieTotalNumber;
     var tiesPerSpawn = levelData[currentLevel-1].tiesPerSpawn;
     gameController.totalTiesThisLevel = totalTies;
-      for(i=0; i<(totalTies/tiesPerSpawn); i++){
-        for(j=0; j<tiesPerSpawn; j++){
+      for(let i=0; i<(totalTies/tiesPerSpawn); i++){
+        for(let j=0; j<tiesPerSpawn; j++){
           setTimeout(tieController,(i*1000));
         };
       };
   };
 
-    //read level
-    //spawn ties
-    //end level on last Tie
+
 
 
 
@@ -149,7 +158,7 @@ $(function(){
         width: '500px',
         margin: '-150px',
         }, tieSpeed , 'linear', function(){
-          tieHitsPlayer($(this))})
+          tieHitsPlayer($(this))});
     $(".container").append($tie)
   }
 
@@ -257,7 +266,7 @@ $(function(){
             $('.winner-screen').append(playerOneScore);
             $('.winner-screen').append(playerTwoScore);
           })
-          } else if (gameController.gameWinner === 2){
+          } else {
             $('.leveltransition').delay(2000).fadeOut(700, function(){
               $('.leveltransition').remove()
               var winner = ($('<div>'))
