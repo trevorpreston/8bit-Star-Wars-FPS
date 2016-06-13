@@ -6,11 +6,37 @@ body {
   background-color: black;
   background-image: url(./images/bg.png);
   background-repeat: no-repeat;
-  cursor: url(images/crosshair.png), crosshair;
 
 }
 
-.hit {
+.container {
+  height: 95vh;
+  width: 95vw;
+  position: absolute;
+  margin: auto;
+}
+
+.button-container {
+  margin: 50vh auto;
+  text-align: center;
+  position: relative;
+}
+
+
+#start-button {
+    background-color: red;
+    position: relative;
+    margin: auto;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.damageFeedback {
   background-image: radial-gradient(ellipse, rgba(255, 0, 0, 0) 0%, rgba(255, 0, 0, 0) 50%, rgba(255, 0, 0, 0.5) 95%);
   width: 100vw;
   height: 100vh;
@@ -18,12 +44,7 @@ body {
   z-index: 150 ;
 }
 
-.container {
-  height: 90vh;
-  width: 90vw;
-  position: relative;
-  margin: auto;
-}
+
 
 .tie {
   width: auto;
@@ -33,21 +54,37 @@ body {
   background-repeat: no-repeat;
 }
 
+
 .dead {
   background-image: url(images/boom.gif)
 }
 
 .status {
-  width:auto;
+  width: auto;
   color: white;
   margin: 40px;
   font-size: 30px;
   font-family: 'Press Start 2P';
 }
 
-.game-over {
-  color:white;
+
+.leveltransition {
+  position: relative;
+  width: 1200px;
+  color: white;
+  margin: 200px auto;
   text-align: center;
-  font-size: 150px;
+  font-size: 120px;
   font-family: 'Press Start 2P'
 }
+
+.winner-screen {
+  position: relative;
+  width: 1200px;
+  color: white;
+  margin: 200px auto;
+  text-align: center;
+  font-size: 70px;
+  font-family: 'Press Start 2P'
+}
+

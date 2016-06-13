@@ -1,40 +1,19 @@
 $(function(){
-    //set variables
-      var playerOneStats = {
-      score:0,
-      level:0,
-      time:0
-    }
 
-      var playerOneStats = {
-      score:0,
-      level:0,
-      time:0
-    }
-
-
-  function playerDeath(){
-    $('.tie').removeClass('tie');
-    $('.health').text('HEALTH: X');
-    $gameOver=$('<div>')
-      .addClass('game-over animated shake')
-      .text('GAME OVER')
-    $('body').prepend($gameOver)
-    playerOneStats.score = score
-    console.log(playerOneStats.score)
-    console.log(player)
-    player++
-  }
-
+  //set variables
 
   console.log("we gucci")
-  var player = 1
   var count = 0
   var level = 1
   var score = 0
   var health = 100
   var startRound = window.setInterval(spawn, 1500);  //second part of this function dictates enemy spawn rate
 
+  function die(){
+    $('.tie').removeClass('tie');
+    $('.health').text('HEALTH: X')
+
+  }
 
   function hit(){
     if(health>0){
@@ -85,15 +64,13 @@ $(function(){
     if(health>0){
       $(".container").append($tie);               //create enemy
     } else {
-      playerDeath()
+      die()
     }
 
 
     if(++count === (10*level)) {                  // start next level and reset timer after 10*level of spawns
       window.clearInterval(startRound)
-      // setTimeout(function(){
       var startRound = window.setInterval(spawn, 1500)
-    // },1000);
       if(health>0){level++}
       $('.level').text("LEVEL: "+level)
     }
@@ -122,8 +99,6 @@ $(function(){
 
 
 });
-
-
 
 
 
