@@ -12,16 +12,9 @@ So what happens if the player does not kill all the tiefights?  Well, the tiefig
 
 No worries though, because if the first player dies, the second player is cued to begin on the first level.  The playerController function recognizes that the first player died and stores the first player's level and score to the playerOne object for later use.  The playerController then renders the first player's "game over", and resets the gameController object so the second player can go.  The second player then goes through the same flow, with their results being stored in the playerTwo object.  The playerController function then compares the two player object and returns the winner with the two comparitive scores.
 
-That's the fundamentals of how the game works.  I've left out rendering details because a) 
 For demonstration purposes, this current version is designed to be impossible to beat at level 5.  
 
 
 
 
-
-Fundamentals:
-As a user, I want to roll play as Harry Potter and shoot Avada Kadavra's at 8-bit Pikachus.  I want the pikachus to spawn randomly from various fixed spawn points.  When clicked, the pikachus disappear.  As a user, I want end-game feedback on how I performed.
-
-If Time:
-As the first user, I want stats stored after my round.  Then, prompt another user to play.  At the end, I want the game to compare the stats of the first and 2nd user.
 
