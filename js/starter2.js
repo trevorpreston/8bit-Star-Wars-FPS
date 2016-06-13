@@ -1,9 +1,5 @@
 $(function(){
 
-  //Today's goals:
-  //1.  Set up levels.
-  //2.  Set up player 1 v 2
-  //3.  clicking tie removes click event listener from that tie
 
   $('#start-button').one('click', startGame)
   $('body').on('click', '.tie', killTie)
