@@ -1,11 +1,6 @@
 $(function(){
 
-  //Today's goals:
-  //1.  Set up levels.
-  //2.  Set up player 1 v 2
-  //3.  clicking tie removes click event listener from that tie
 
-  console.log("we gucci")
   $('#start-button').one('click', startGame)
   $('body').on('click', '.tie', killTie)
 
@@ -58,88 +53,6 @@ $(function(){
     score: 0
   }
 
-
-
-
-
-
-  function playerController(){
-    determineWinner();
-    console.log(gameController.gameWinner)
-    if (gameController.health <= 0){
-      var $gameOver = $('<div>')
-        .addClass('leveltransition')
-        .text('GAME OVER')
-      var container = $('.container')
-      $('.container').remove();
-      ($gameOver).hide().appendTo($('body')).fadeIn(2000);
-      if(gameController.player===1){
-        playerOne.level = gameController.level;
-        playerOne.score = gameController.score;
-        gameController.player = 2;
-        gameController.level = 1;
-        gameController.score = 0;
-        gameController.health = 100;
-        gameController.ties = 1;
-        gameController.tiesKilledThisLevel = 0;
-        gameController.totalTiesThisLevel = 0;
-        $('.leveltransition').delay(2000).fadeOut(700, function(){
-          $('.leveltransition').remove()
-           var $promptPlayerTwo = ($('<div>'))
-          .addClass('leveltransition')
-          .text('Player 2!')
-          $('body').append($promptPlayerTwo)
-          $('.leveltransition').delay(2000).fadeOut(300, function(){
-            $('.leveltransition').remove();
-            var $newContainer = ($('<div>'))
-              .addClass('container')
-            $('body').append($newContainer);
-            createScoreboard();
-            nextLevel();
-          })
-        })
-
-      } else if (gameController.player===2){
-          playerTwo.level = gameController.level;
-          playerTwo.score = gameController.score;
-          if (gameController.gameWinner === 1) {
-            $('.leveltransition').delay(2000).fadeOut(700, function(){
-              $('.leveltransition').remove()
-              var winner = ($('<div>'))
-                .addClass('winner-screen')
-                .text('Player One Wins!')
-              var playerOneScore = ($('<div>'))
-                .addClass('status')
-                .text('PLAYER 1: ' + playerOne.score +' POINTS')
-              var playerTwoScore = ($('<div>'))
-                .addClass('status')
-                .text('PLAYER 2: ' + playerTwo.score +' POINTS')
-            $('body').append(winner);
-            $('.winner-screen').append(playerOneScore);
-            $('.winner-screen').append(playerTwoScore);
-          })
-          } else if (gameController.gameWinner === 2){
-            $('.leveltransition').delay(2000).fadeOut(700, function(){
-              $('.leveltransition').remove()
-              var winner = ($('<div>'))
-                .addClass('winner-screen')
-                .text('Player Two Wins!')
-              var playerOneScore = ($('<div>'))
-                .addClass('status')
-                .text('PLAYER 1: ' + playerOne.score +' POINTS')
-              var playerTwoScore = ($('<div>'))
-                .addClass('status')
-                .text('PLAYER 2: ' + playerTwo.score +' POINTS')
-            $('body').append(winner);
-            $('.winner-screen').append(playerOneScore);
-            $('.winner-screen').append(playerTwoScore);
-          })
-          }
-      }
-    }
-  }
-
-
   function determineWinner(){
     if(playerTwo.score > playerOne.score){
       gameController.gameWinner = 2;
@@ -149,14 +62,10 @@ $(function(){
   }
 
 
-
-
-
   function playerBeatLevel(){
     gameController.level++;
     gameController.totalTiesThisLevel = levelData[gameController.level-1].tieTotalNumber;
     var oldLevel = gameController.level-1
-    console.log("level complete!")
     var $leveltransition1 = $('<div>')
       .addClass('leveltransition')
       .text('Level ' + oldLevel + ' Completed!')
@@ -178,7 +87,6 @@ $(function(){
 
 
   function startGame(){
-    console.log("let's GOOOO");
     $('.button-container').remove();
     createScoreboard();
     $('body').css("cursor", "url(images/crosshair.png), crosshair");
@@ -224,7 +132,6 @@ $(function(){
 
 
   function tieController(){
-    console.log("I'm here!")
     gameController.ties++
     var randomLeft = Math.floor(Math.random()*$(".container").width());
     var randomTop = Math.floor(Math.random()*$(".container").height());
@@ -244,13 +151,11 @@ $(function(){
         }, tieSpeed , 'linear', function(){
           tieHitsPlayer($(this))})
     $(".container").append($tie)
-    console.log($tie.attr('id'));
   }
 
 
   function tieHitsPlayer(tie){
-    console.log(tie.attr('id'))
-    gameController.health -= 50;
+    gameController.health -= 20;
     if((gameController.health>0) && (tie.attr('id')===('tie')+gameController.totalTiesThisLevel)){
       $('.health').text('HEALTH: '+gameController.health);
       tie.remove();
@@ -280,10 +185,8 @@ $(function(){
     gameController.score+=100
     gameController.tiesKilledThisLevel++
     $('.score').text('SCORE: ' + gameController.score)
-    console.log(deadTie.attr('id'))
     deadTie.off('click', deadTie, killTie);
     if(deadTie.attr('id')===('tie'+gameController.totalTiesThisLevel)){
-      console.log("that's the last tie!")
       deadTie
         .css('background-image','url(images/boom.gif)') //explode
         .stop(true); //stop spawn animation
@@ -299,6 +202,80 @@ $(function(){
         deadTie.remove();
       },600)
      }
+  }
+
+  function playerController(){
+    determineWinner();
+    if (gameController.health <= 0){
+      var $gameOver = $('<div>')
+        .addClass('leveltransition')
+        .text('GAME OVER')
+      var container = $('.container')
+      $('.container').remove();
+      ($gameOver).hide().appendTo($('body')).fadeIn(2000);
+      if(gameController.player===1){
+        playerOne.level = gameController.level;
+        playerOne.score = gameController.score;
+        gameController.player = 2;
+        gameController.level = 1;
+        gameController.score = 0;
+        gameController.health = 100;
+        gameController.ties = 1;
+        gameController.tiesKilledThisLevel = 0;
+        gameController.totalTiesThisLevel = 0;
+        $('.leveltransition').delay(2000).fadeOut(700, function(){
+          $('.leveltransition').remove()
+           var $promptPlayerTwo = ($('<div>'))
+          .addClass('leveltransition')
+          .text('Player 2!')
+          $('body').append($promptPlayerTwo)
+          $('.leveltransition').delay(2000).fadeOut(300, function(){
+            $('.leveltransition').remove();
+            var $newContainer = ($('<div>'))
+              .addClass('container')
+            $('body').append($newContainer);
+            createScoreboard();
+            nextLevel();
+          })
+        })
+      } else if (gameController.player===2){
+          playerTwo.level = gameController.level;
+          playerTwo.score = gameController.score;
+          if (gameController.gameWinner === 1) {
+            $('.leveltransition').delay(2000).fadeOut(700, function(){
+              $('.leveltransition').remove()
+              var winner = ($('<div>'))
+                .addClass('winner-screen')
+                .text('Player One Wins!')
+              var playerOneScore = ($('<div>'))
+                .addClass('status')
+                .text('PLAYER 1: ' + playerOne.score +' POINTS')
+              var playerTwoScore = ($('<div>'))
+                .addClass('status')
+                .text('PLAYER 2: ' + playerTwo.score +' POINTS')
+            $('body').append(winner);
+            $('.winner-screen').append(playerOneScore);
+            $('.winner-screen').append(playerTwoScore);
+          })
+          } else if (gameController.gameWinner === 2){
+            $('.leveltransition').delay(2000).fadeOut(700, function(){
+              $('.leveltransition').remove()
+              var winner = ($('<div>'))
+                .addClass('winner-screen')
+                .text('Player Two Wins!')
+              var playerOneScore = ($('<div>'))
+                .addClass('status')
+                .text('PLAYER 1: ' + playerOne.score +' POINTS')
+              var playerTwoScore = ($('<div>'))
+                .addClass('status')
+                .text('PLAYER 2: ' + playerTwo.score +' POINTS')
+            $('body').append(winner);
+            $('.winner-screen').append(playerOneScore);
+            $('.winner-screen').append(playerTwoScore);
+          })
+          }
+      }
+    }
   }
 
 
